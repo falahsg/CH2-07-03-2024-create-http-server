@@ -1,32 +1,22 @@
-// core package -> built in node js
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-
-// third party package
 const url = require("url");
-
-
+const PUBLIC_DIRECTORY = path.join(__dirname, "../public");
 const PORT = 8000;
 
 const server = (req, res) => {
-  // localhost:8000
   if (req.url === "/") {
-    req.url = "index.example.html"
-  }
-  // localhost:8000/search
-  else if (req.url === "/search") {
-    res.end("ini halaman search");
+    req.url = "/index.html";
+  } else if (req.url === "/cars") {
+    req.url = "/cars.html";
   } else {
-    res.end("gak ada....");
+    req.url = req.url;
   }
-
-  const PUBLIC_DIRECTORY = path.join(__dirname, "../public");
   const parseURL = url.parse(req.url);
   const pathName = `${parseURL.pathname}`;
   const extension = path.parse(pathName).ext;
   const absolutePath = path.join(PUBLIC_DIRECTORY, pathName);
-  
 
   const contentTypes = {
     ".css": "text/css",
@@ -46,5 +36,6 @@ const server = (req, res) => {
     }
   });
 };
+
 http.createServer(server).listen(PORT);
-console.log(`server running... PORT : localhost:${PORT}`);
+console.log(`Server is running ... PORT : localhost:${PORT}`);
